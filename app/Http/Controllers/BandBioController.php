@@ -37,7 +37,7 @@ class BandBioController extends Controller
 
         if ($request->hasFile('bio_image') && $request->file('bio_image')->isValid()) {
             $image_path = $request->file('bio_image')->store('band/bio', 'media');
-            $updateData['image_url'] = Storage::disk('media')->url($image_path);
+            $updateData['image'] = Storage::disk('media')->url($image_path);
         }
 
         if (!empty($request->bio_imgalt)) {
@@ -58,13 +58,15 @@ class BandBioController extends Controller
     {
         $band = Band::firstOrFail();
 
-        if ($band->image_url) {
-            $path = str_replace(Storage::disk('media')->url(''), '', $band->image_url);
+        if ($band->image) {
+            $mediaUrl = Storage::disk('media')->url('/');
+            $path = str_replace($mediaUrl, '', $band->image);
+
             if (Storage::disk('media')->exists($path)) {
                 Storage::disk('media')->delete($path);
             }
 
-            $band->image_url = 'https://placehold.co/600x400';
+            $band->image = 'https://placehold.co/1280x720?text=Band+Photo';
             $band->save();
         }
 
@@ -73,4 +75,5 @@ class BandBioController extends Controller
             'message' => 'Band image deleted successfully.',
         ]);
     }
+
 }

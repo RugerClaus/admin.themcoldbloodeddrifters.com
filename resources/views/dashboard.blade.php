@@ -254,7 +254,7 @@
             <div class="bio_editor_wrapper">
                 <form enctype="multipart/form-data" method="POST" class="band_bio_editor">
                     <div class="band_bio_image">
-                        <img src="{{$data['band']->image_url ?? 'https://placehold.co/1280x720?text=Band+Photo'}}" alt="band image" id="band_image">
+                        <img src="{{$data['band']->image ?? 'https://placehold.co/1280x720?text=Band+Photo'}}" alt="band image" id="band_image">
                         <button type="button" id="delete_band_image">Delete Image</button>
                     </div>
                     <div class="band_bio_text">
@@ -280,7 +280,7 @@
                 // Handle image deletion
                 document.getElementById('delete_band_image').addEventListener('click', function() {
                     fetch('/band/bio/delete_image', {
-                        method: 'DELETE',
+                        method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                             'Accept': 'application/json'
@@ -289,7 +289,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById('band_image').src = 'https://placehold.co/600x400';
+                            document.getElementById('band_image').src = 'https://placehold.co/1280x720?text=Band+Photo';
                             document.getElementById('band_image_status').textContent = `${data.message}`;
                             document.getElementById('band_image_status').classList.remove('hidden')
                             setTimeout(() => {
@@ -338,8 +338,8 @@
                                     document.getElementById('band_image_status').classList.add('hidden')
                                 }, 2000);
 
-                                if (data.updated_fields.image_url) {
-                                    bandImg.src = data.updated_fields.image_url;
+                                if (data.updated_fields.image) {
+                                    bandImg.src = data.updated_fields.image;
                                 }
 
                             } else {
