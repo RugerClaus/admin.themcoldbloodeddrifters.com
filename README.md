@@ -15,3 +15,7 @@
 
 ## Version 1.0.1-c - Hotfix
 - Fixed issues with uploading and deleting images from the band bio editor
+
+## Version 1.0.1-d Hotfix
+- When clicking the browser back button, the logout button would no longer be visible on the dashboard...
+fixed that...
